@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>e.portal — Главная</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+<div class="logo">
+  <img src="/Users/akezh/Downloads/hackertone 12-13/e.p.jpg" alt="e.portal logo" class="logo-img">
+  <span class="logo-text">e.portal</span>
+</div>
+    <nav class="nav-links">
+      <a href="index.html" data-lang="nav_home">Главная</a>
+      <a href="submission.html" data-lang="nav_submit">Подать заявку</a>
+      <a href="status.html" data-lang="nav_status">Статус заявки</a>
+    </nav>
+    <div class="header-right">
+      <div class="language-select">
+        <select id="langSelect" onchange="changeLang()">
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+          <option value="kz">KZ</option>
+        </select>
+      </div>
+      <button class="btn" onclick="egovLogin()" data-lang="egov">Войти через eGov</button>
+      <a class="btn secondary" href="register.html" data-lang="register">Регистрация</a>
+    </div>
+  </header>
+  <main class="container">
+    <div class="card">
+      <h1 data-lang="title">Добро пожаловать в e.portal</h1>
+      <p data-lang="subtitle">Единая цифровая экосистема управления городским хозяйством.</p>
+      <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+        <a class="btn" href="submission.html" data-lang="btn_submit">Подать заявку</a>
+        <a class="btn" href="status.html" data-lang="btn_status">Статус заявки</a>
+      </div>
+      <p class="small" style="margin-top:12px" data-lang="explain">
+        Место под логотип, безопасность и eGov-интеграция предусмотрены в архитектуре.
+      </p>
+    </div>
+    <div class="card">
+      <h3 data-lang="how">Как это работает</h3>
+      <ol>
+        <li data-lang="step1">Житель отправляет заявку с фото и локацией.</li>
+        <li data-lang="step2">Исполнители загружают фото «До»/«После» и фиксируют время.</li>
+        <li data-lang="step3">Администрация контролирует процессы через дашборд.</li>
+      </ol>
+    </div>
+  </main>
+  <script>
+    const dict = {
+      ru:{
+        nav_home:"Главная",nav_submit:"Подать заявку",nav_status:"Статус заявки",
+        egov:"Войти через eGov", register:"Регистрация",
+        title:"Добро пожаловать в e.portal",
+        subtitle:"Единая цифровая экосистема управления городским хозяйством.",
+        btn_submit:"Подать заявку", btn_status:"Статус заявки",
+        explain:"Место под логотип, безопасность и eGov-интеграция предусмотрены в архитектуре.",
+        how:"Как это работает", step1:"Житель отправляет заявку с фото и локацией.", step2:"Исполнители загружают фото «До»/«После» и фиксируют время.", step3:"Администрация контролирует процессы через дашборд."
+      },
+      en:{
+        nav_home:"Home",nav_submit:"Submit request",nav_status:"Request status",
+        egov:"Login via eGov", register:"Sign up",
+        title:"Welcome to e.portal",
+        subtitle:"A unified digital ecosystem for city management.",
+        btn_submit:"Submit request", btn_status:"Request status",
+        explain:"Placeholder for logo. Security and eGov integration are part of the architecture.",
+        how:"How it works", step1:"A citizen submits a request with photo & location.", step2:"Field staff upload 'Before'/'After' photos and track time.", step3:"Administration controls processes via dashboard."
+      },
+      kz:{
+        nav_home:"Басты бет",nav_submit:"Өтінім беру",nav_status:"Өтінім күйі",
+        egov:"eGov арқылы кіру", register:"Тіркелу",
+        title:"e.portal жүйесіне қош келдіңіз",
+        subtitle:"Қалалық шаруашылықты басқарудың бірыңғай цифрлық экожүйесі.",
+        btn_submit:"Өтінім беру", btn_status:"Өтінім күйі",
+        explain:"Логотипке арналған орын, қауіпсіздік пен eGov интеграциясы қарастырылған.",
+        how:"Қалай жұмыс істейді", step1:"Тұрғын фото және орнымен өтінім жібереді.", step2:"Өртегі қызметкерлер «Алдын/Кейін» фотосын жүктейді және уақытты тіркейді.", step3:"Әкімдік процестерді бақылап отырады."
+      }
+    };
+    function changeLang(){
+      const lang = document.getElementById('langSelect').value;
+      document.querySelectorAll('[data-lang]').forEach(el=>{
+        const key = el.getAttribute('data-lang');
+        if(dict[lang] && dict[lang][key]) el.textContent = dict[lang][key];
+      });
+      document.documentElement.lang = lang;
+    }
+    changeLang();
+    function egovLogin(){
+      alert("Эмуляция входа через eGov (в реальной системе → OAuth/eGov SSO).");
+    }
+  </script>
+</body>
+</html>

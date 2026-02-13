@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>e.portal — Профиль</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header"><div class="logo"><div class="mark">EP</div><div>e.portal</div></div></header>
+  <main class="container">
+    <div class="card" id="profileCard" style="max-width:900px;margin:auto"></div>
+  </main>
+
+<script>
+  const user = JSON.parse(localStorage.getItem('currentUser')||'null');
+  const card = document.getElementById('profileCard');
+  if(!user){ card.innerHTML = '<p>Необходимо войти</p><a class="btn" href="login.html">Войти</a>'; }
+  else {
+    const requests = JSON.parse(localStorage.getItem('requests')||'[]');
+    const my = requests.filter(r=> r.createdBy === user.email || true); 
+    card.innerHTML = `<h2>Профиль: ${user.email}</h2>
+      <p><strong>Роль:</strong> ${user.role}</p>
+      <p><strong>ИИН:</strong> ${user.iin}</p>
+      <h3>Мои заявки</h3>
+      <ul>${my.map(r=>`<li>${r.id} — ${r.category} — ${r.status}</li>`).join('')}</ul>`;
+  }
+</script>
+</body>
+</html>

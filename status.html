@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>e.portal — Статус заявки</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="logo">
+    <div class="mark">EP</div>
+    <span>e.portal</span>
+  </div>
+  <nav class="nav-links">
+    <a href="index.html">Главная</a>
+    <a href="submission.html">Подать заявку</a>
+    <a href="status.html">Статус заявки</a>
+  </nav>
+  <div class="header-right">
+    <select>
+      <option>RU</option>
+      <option>EN</option>
+      <option>KZ</option>
+    </select>
+  </div>
+</header>
+<main class="container">
+  <div class="card status-card">
+    <h2>Проверка статуса заявки</h2>
+    <form class="status-search">
+      <div class="form-group">
+        <label for="application-number">Номер заявки</label>
+        <input id="application-number" type="text" placeholder="Например: EP-2026-00123">
+      </div>
+
+      <div class="form-group">
+        <label for="iin">ИИН</label>
+        <input id="iin" type="text" placeholder="12 цифр">
+      </div>
+      <button class="btn">Проверить</button>
+    </form>
+    <div class="status-result">
+      <h3>Текущий статус</h3>
+      <div class="status-steps">
+        <div class="step completed">Принята</div>
+        <div class="step completed">В обработке</div>
+        <div class="step active">Назначен исполнитель</div>
+        <div class="step">Выполнено</div>
+      </div>
+
+      <div class="status-info">
+        <p><strong>Категория:</strong> Уличное освещение</p>
+        <p><strong>Дата подачи:</strong> 10.02.2026</p>
+        <p><strong>Ответственный орган:</strong> Акимат района</p>
+        <p><strong>Ожидаемый срок:</strong> до 20.02.2026</p>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

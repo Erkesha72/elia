@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>e.portal — Панель администратора</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><div class="mark">EP</div><div>e.portal</div></div>
+    <nav class="nav-links"><a href="admin.html">Панель</a></nav>
+    <div class="header-right"><select id="langSelect" onchange="changeLang()"><option value="ru">RU</option><option value="en">EN</option><option value="kz">KZ</option></div>
+  </header>
+
+  <main class="container">
+    <div class="card">
+      <h2>Панель администратора</h2>
+      <div class="map" id="map">Карта горячих точек (плейсхолдер)</div>
+      <div style="display:flex;gap:12px;margin-top:12px">
+        <div class="card" style="flex:1">
+          <h3>Среднее время устранения</h3><p style="font-size:22px;color:var(--brand)" id="avgTime">—</p>
+        </div>
+        <div class="card" style="flex:1">
+          <h3>Заявок в работе</h3><p style="font-size:22px;color:var(--brand)" id="inWork">—</p>
+        </div>
+        <div class="card" style="flex:1">
+          <h3>Просрочено</h3><p style="font-size:22px;color:#e74c3c" id="overdue">—</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Список заявок</h3>
+      <table class="table" id="reqTable">
+        <thead><tr><th>ID</th><th>Категория</th><th>Описание</th><th>Статус</th><th>Дедлайн</th><th>Действия</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+<script>
+  function changeLang(){ }
+  function loadRequests(){
+    const requests = JSON.parse(localStorage.getItem('requests')||'[]');
+    const tbody = document.querySelector('#reqTable tbody'); tbody.innerHTML='';
+    let inWork=0, overdue=0, sumTime=0, countDone=0;
+
+    requests.forEach(r=>{
+      const tr = document.createElement('tr');
+      const d = new Date(r.deadline);
+      const overdueFlag = new Date() > d;
+      if(r.status==='in_progress' || r.status==='assigned') inWork++;
+      if(overdueFlag) overdue++;
+      if(r.status==='completed' && r.completedAt){
+        sumTime += (new Date(r.completedAt) - new Date(r.createdAt));
+        countDone++;
+      }
+
+      tr.innerHTML = `<td>${r.id}</td>
+        <td>${r.category}</td>
+        <td style="max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.description}</td>
+        <td>${r.status}${overdueFlag?'<span style="color:red"> (просрочено)</span>':''}</td>
+        <td>${d.toLocaleString()}</td>
+        <td>
+          <select onchange="changeStatus('${r.id}',this.value)">
+            <option value="accepted"${r.status==='accepted'?' selected':''}>Принято</option>
+            <option value="assigned"${r.status==='assigned'?' selected':''}>Назначено</option>
+            <option value="in_progress"${r.status==='in_progress'?' selected':''}>В работе</option>
+            <option value="completed"${r.status==='completed'?' selected':''}>Выполнено</option>
+          </select>
+          <button class="btn" onclick="viewDetail('${r.id}')">Открыть</button>
+        </td>`;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('inWork').textContent = inWork;
+    document.getElementById('overdue').textContent = overdue;
+    const avgHours = countDone? Math.round((sumTime/countDone)/3600000) : '-';
+    document.getElementById('avgTime').textContent = avgHours === '-'? '-' : avgHours + ' ч.';
+  }
+
+  function changeStatus(id, status){
+    const requests = JSON.parse(localStorage.getItem('requests')||'[]');
+    const r = requests.find(x=>x.id===id);
+    if(!r) return alert('Не найдена');
+    r.status = status;
+    if(status === 'completed') r.completedAt = new Date().toISOString();
+    localStorage.setItem('requests', JSON.stringify(requests));
+    alert('Статус обновлен');
+    loadRequests();
+  }
+
+  function viewDetail(id){
+    location.href = 'status.html?show='+id;
+  }
+
+  loadRequests();
+  (function checkQuery(){
+    const p = new URLSearchParams(location.search);
+    if(p.get('show')){ localStorage.setItem('lastRequestId', p.get('show')); location.href='status.html'; }
+  })();
+</script>
+</body>
+</html>

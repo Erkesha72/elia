@@ -1,0 +1,165 @@
+<!-- register.html — Регистрация -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>e.portal — Регистрация</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="logo"><div class="mark">EP</div><div>e.portal</div></div>
+    <div class="header-right">
+      <select id="langSelect" onchange="changeLang()"><option value="ru">RU</option><option value="en">EN</option><option value="kz">KZ</option></select>
+      <button class="btn" onclick="location.href='index.html'">Назад</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card" style="max-width:720px;margin:auto">
+      <h2 data-lang="title">Регистрация</h2>
+
+      <form id="regForm">
+        <div class="form-field">
+          <label for="role" data-lang="role">Тип пользователя</label>
+          <select id="role" required>
+            <option value="">--</option>
+            <option value="citizen" data-lang="role_cit">Житель</option>
+            <option value="business" data-lang="role_bus">Предприниматель</option>
+            <option value="gov" data-lang="role_gov">Сотрудник госорганов</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col form-field">
+            <label for="iin" data-lang="iin">ИИН</label>
+            <input id="iin" type="text" maxlength="12" placeholder="12 цифр" required>
+            <div class="small" data-lang="iin_small">Вводите ИИН без пробелов.</div>
+          </div>
+          <div class="col form-field">
+            <label for="email" data-lang="email">Email (логин)</label>
+            <input id="email" type="email" required>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col form-field">
+            <label for="password" data-lang="pass">Пароль</label>
+            <input id="password" type="password" minlength="6" required>
+            <div class="small" data-lang="pass_small">Мин. 6 символов. В реальной системе — хешируется на сервере.</div>
+          </div>
+          <div class="col form-field">
+            <label for="confirm" data-lang="confirm">Повторите пароль</label>
+            <input id="confirm" type="password" required>
+          </div>
+        </div>
+
+        <div class="form-field captcha">
+          <input type="checkbox" id="robot" required> <label for="robot" data-lang="robot">Я не робот</label>
+          <div class="small" data-lang="robot_small">Для прототипа — чекбокс; в боевой — используйте реальную капчу.</div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center">
+          <button class="btn" type="submit" data-lang="register_btn">Зарегистрироваться</button>
+          <button class="btn secondary" type="button" onclick="location.href='login.html'" data-lang="have_acc">Уже есть аккаунт</button>
+        </div>
+
+        <p id="message" style="margin-top:10px"></p>
+      </form>
+    </div>
+  </main>ы
+  <script>
+    const dict = {
+      ru:{
+        title:"Регистрация", 
+        role:"Тип пользователя", 
+        role_cit:"Житель", 
+        ole_bus:"Предприниматель", 
+        role_gov:"Сотрудник госорганов",
+        iin:"ИИН", 
+        iin_small:"Вводите ИИН без пробелов.",
+        email:"Email (логин)",
+        pass:"Пароль",
+        pass_small:"Мин. 6 символов. В реальной системе — хешируется на сервере.",
+        confirm:"Повторите пароль",
+        robot:"Я не робот", 
+        robot_small:"Для прототипа — чекбокс; в боевой — используйте реальную капчу.",
+        register_btn:"Зарегистрироваться", 
+        have_acc:"Уже есть аккаунт"
+      },
+      en:{
+        title:"Sign up", 
+        role:"User type", 
+        role_cit:"Citizen",
+        role_bus:"Entrepreneur", 
+        role_gov:"Gov employee",
+        iin:"IIN", 
+        iin_small:"Enter IIN without spaces.", 
+        email:"Email (login)",
+        pass:"Password", 
+        pass_small:"Min 6 chars. In production, password hashed on server.",
+        confirm:"Confirm password",
+        robot:"I'm not a robot", 
+        robot_small:"Prototype: checkbox. In production use real captcha.",
+        register_btn:"Sign up", 
+        have_acc:"Already have an account"
+      },
+      kz:{
+        title:"Тіркелу", 
+        role:"Пайдаланушы түрі", 
+        role_cit:"Тұрғын", 
+        role_bus:"Кәсіпкер", 
+        role_gov:"Мемлекеттік қызметкер",
+        iin:"ЖСН (ИИН)", 
+        iin_small:"ЖСН-ды бос орынсыз енгізіңіз.", 
+        email:"Email (логин)",
+        pass:"Құпия сөз", 
+        pass_small:"Мин. 6 таңба. Өндірісте серверде хештеледі.",
+        confirm:"Құпия сөзді қайталаңыз",
+        robot:"Мен робот емеспін", 
+        robot_small:"Прототип: чекбокс. Өндірісте капча қажет.",
+        register_btn:"Тіркелу", 
+        have_acc:"Есептік жазбаңыз бар ма?"
+      }
+    };
+
+    function changeLang(){
+      const lang = document.getElementById('langSelect').value;
+      document.querySelectorAll('[data-lang]').forEach(el=>{
+        const key = el.getAttribute('data-lang');
+        if(dict[lang] && dict[lang][key]) el.textContent = dict[lang][key];
+      });
+      document.documentElement.lang = lang;
+    }
+    changeLang();
+
+    document.getElementById('regForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const role = document.getElementById('role').value;
+      const iin = document.getElementById('iin').value.trim();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+      const robot = document.getElementById('robot').checked;
+      const msg = document.getElementById('message');
+      msg.style.color='red';
+
+      if(!role){ msg.textContent = 'Выберите роль'; return; }
+      if(!/^\d{12}$/.test(iin)){ msg.textContent = 'ИИН должен быть 12 цифр'; return; }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent = 'Неверный email'; return; }
+      if(password.length < 6){ msg.textContent = 'Пароль слишком короткий'; return; }
+      if(password !== confirm){ msg.textContent = 'Пароли не совпадают'; return; }
+      if(!robot){ msg.textContent = 'Подтвердите, что вы не робот'; return; }
+
+      const users = JSON.parse(localStorage.getItem('users')||'[]');
+      if(users.find(u=>u.email===email)){ msg.textContent = 'Пользователь с таким email уже зарегистрирован'; return; }
+      users.push({role, iin, email, password});
+      localStorage.setItem('users', JSON.stringify(users));
+
+      msg.style.color='green';
+      msg.textContent = 'Регистрация прошла успешно. Перейдите на страницу входа.';
+      setTimeout(()=>location.href='login.html',1000);
+    });
+  </script>
+</body>
+</html>
