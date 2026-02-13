@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Помощь | e.portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="main-header">
+  <div class="logo-area">
+     <div class="logo"><div class="mark">EP</div><div>e.portal</div></div>
+  </div>
+  <nav class="nav-menu">
+    <a href="index.html">Главная</a>
+    <a href="submit.html">Подать заявку</a>
+    <a href="status.html">Статус заявки</a>
+    <a href="support.html" class="active">Помощь</a>
+  </nav>
+</header>
+<main class="support-container">
+  <h2>Служба поддержки</h2>
+  <p>Опишите проблему — мы обязательно поможем</p>
+  <form class="support-form">
+    <label for="user-type">Кто вы?</label>
+    <select id="user-type" required>
+      <option value="">Выберите</option>
+      <option>Житель</option>
+      <option>Предприниматель</option>
+      <option>Сотрудник госорганов</option>
+    </select>
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="example@mail.kz" required>
+    <label for="problem-type">Тип проблемы</label>
+    <select id="problem-type" required>
+      <option value="">Выберите</option>
+      <option>Проблема с заявкой</option>
+      <option>Не отображается статус</option>
+      <option>Ошибка на сайте</option>
+      <option>Вход / регистрация</option>
+      <option>Другое</option>
+    </select>
+    <label for="problem-description">Описание проблемы</label>
+    <textarea id="problem-description" rows="5" placeholder="Опишите проблему подробно..." required></textarea>
+    <label class="robot">
+      <input type="checkbox" required>
+      Я не робот
+    </label>
+    <button type="submit">Отправить обращение</button>
+  </form>
+</main>
+</body>
+</html>
